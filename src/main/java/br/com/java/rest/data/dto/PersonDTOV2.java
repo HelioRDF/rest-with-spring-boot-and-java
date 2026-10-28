@@ -1,9 +1,13 @@
 package br.com.java.rest.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import tools.jackson.databind.annotation.JsonNaming;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-
+@JsonPropertyOrder(value = {"id","firstName","lastName","gender"})
 public class PersonDTOV2 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -12,6 +16,7 @@ public class PersonDTOV2 implements Serializable {
 
     private String firstName;
     private String lastName;
+    @JsonProperty("ADreSS")
     private String address;
     private String gender;
     private String password;
