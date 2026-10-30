@@ -1,15 +1,14 @@
 package br.com.java.rest.data.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import tools.jackson.databind.annotation.JsonNaming;
+import br.com.java.rest.serializer.GenderSerializer;
+import com.fasterxml.jackson.annotation.*;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@JsonFilter("PersonFilter")
 @JsonPropertyOrder(value = {"id", "firstName", "lastName", "gender"})
 public class PersonDTOV2 implements Serializable {
 
@@ -18,12 +17,19 @@ public class PersonDTOV2 implements Serializable {
     @JsonIgnore
     private Long id;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String firstName;
     private String lastName;
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date birthDay = new Date();
     @JsonProperty("ADDreSS")
     private String address;
+
+    //@JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String phoneNumber="";
+    @JsonSerialize(using = GenderSerializer.class)
     private String gender;
     private String password;
 
@@ -45,9 +51,18 @@ public class PersonDTOV2 implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", birthDay=" + birthDay +
                 ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", gender='" + gender + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {

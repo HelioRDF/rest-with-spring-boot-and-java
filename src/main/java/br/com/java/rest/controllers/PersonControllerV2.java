@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectWriter;
 
 import java.util.List;
 
@@ -19,14 +20,23 @@ public class PersonControllerV2 {
     @Autowired
     PersonServiceV2 serviceV2;
 
+
+
+    private final ObjectWriter personObjectWriter;
+
+    public PersonControllerV2(ObjectWriter personObjectWriter) {
+        this.personObjectWriter = personObjectWriter;
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public PersonDTOV2 findByIdV2(@PathVariable("id") long id) {
         return serviceV2.findById(id);
     }
 
     @GetMapping("/all")
-    public List<PersonDTOV2> findByAllV2() {
-        return serviceV2.findByAll();
+    public String findByAllV2() {
+        List<PersonDTOV2> people = serviceV2.findByAll();
+        return personObjectWriter.writeValueAsString(people);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
